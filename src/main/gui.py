@@ -2,60 +2,82 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from functions import processar_projetos, ler_dados_excel
 
-def selecionar_excel(entry_excel):
-    caminho = filedialog.askopenfilename(
-        title="Selecione o arquivo Excel",
-        filetypes=[("Arquivo Excel", "*.xlsx")],
-    )
-    if caminho:
-        entry_excel.delete(0, tk.END)
-        entry_excel.insert(0, caminho)
+class SmartAlbumApp:
+    def __init__(self, root):
+        self.WINDOW_WIDTH = 600
+        self.WINDOW_HEIGHT = 350
+        self.BG_COLOR = "#f0f0f0"
+        self.LABEL_FONT = ("Helvetica", 12)
+        self.ENTRY_WIDTH = 50
+        self.BUTTON_FONT = ("Helvetica", 10, "bold")
+        self.BUTTON_BG = "#4CAF50"
+        self.BUTTON_FG = "#FFFFFF"
+        self.PADY_LABEL = 10
+        self.PADY_BUTTON = 15
 
-def selecionar_programa(entry_programa):
-    caminho = filedialog.askopenfilename(
-        title="Selecione o arquivo do Programa"
-    )
-    if caminho:
-        entry_programa.delete(0, tk.END)
-        entry_programa.insert(0, caminho)
+        self.root = root
+        self.root.title("SmartAlbum Bot v0.1")
+        self.root.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
+        self.root.config(bg=self.BG_COLOR)
+        
+        self.root.iconbitmap("src\\res\\theme\\Logo-CZR5.ico")
 
-def processar(entry_excel, entry_programa):
-    caminho_excel = entry_excel.get()
-    caminho_programa = entry_programa.get()
-    
-    if not caminho_excel or not caminho_programa:
-        messagebox.showwarning("Aviso", "Por favor, preencha todos os campos.")
-        return
-    
-    df_projetos = ler_dados_excel(caminho_excel)
-    
-    if df_projetos is not None:
+        self.create_widgets()
+
+    def create_widgets(self):
+        tk.Label(self.root, text="Arquivo Excel:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
+        self.entry_excel = tk.Entry(self.root, width=self.ENTRY_WIDTH)
+        self.entry_excel.pack(pady=5)
+        tk.Button(self.root, text="Selecionar Excel", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
+                  command=self.selecionar_excel).pack(pady=self.PADY_BUTTON)
+
+        tk.Label(self.root, text="Caminho do Programa:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
+        self.entry_programa = tk.Entry(self.root, width=self.ENTRY_WIDTH)
+        self.entry_programa.pack(pady=5)
+        tk.Button(self.root, text="Selecionar Programa", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
+                  command=self.selecionar_programa).pack(pady=self.PADY_BUTTON)
+
+        # Botão de processar
+        tk.Button(self.root, text="Processar", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
+                  command=self.processar).pack(pady=self.PADY_BUTTON)
+
+    def selecionar_arquivo(self, entry, tipo_arquivo, extensao):
+        caminho = filedialog.askopenfilename(
+            title=f"Selecione o {tipo_arquivo}",
+            filetypes=[(f"Arquivo {tipo_arquivo}", extensao)],
+        )
+        if caminho:
+            entry.delete(0, tk.END)
+            entry.insert(0, caminho)
+
+    def selecionar_excel(self):
+        self.selecionar_arquivo(self.entry_excel, "Excel", "*.xlsx")
+
+    def selecionar_programa(self):
+        self.selecionar_arquivo(self.entry_programa, "Programa", "*.*")
+
+    def processar(self):
+        caminho_excel = self.entry_excel.get()
+        caminho_programa = self.entry_programa.get()
+
+        if not caminho_excel or not caminho_programa:
+            messagebox.showwarning("Aviso", "Por favor, preencha todos os campos.")
+            return
+
         try:
-            processar_projetos(caminho_programa, df_projetos)
-            messagebox.showinfo("Sucesso", "Processamento concluído com sucesso!")
+            df_projetos = ler_dados_excel(caminho_excel)
+            if df_projetos is not None:
+                processar_projetos(caminho_programa, df_projetos)
+                messagebox.showinfo("Sucesso", "Processamento concluído com sucesso!")
+            else:
+                messagebox.showerror("Erro", "Erro ao ler o arquivo Excel.")
         except Exception as e:
             messagebox.showerror("Erro", f"Erro ao processar: {str(e)}")
 
 def run_interface():
     root = tk.Tk()
-    root.title("SmartAlbum Bot v0.1")
-    root.geometry("400x200")
-
-    label_excel = tk.Label(root, text="Arquivo Excel:")
-    label_excel.pack(pady=5)
-    entry_excel = tk.Entry(root, width=40)
-    entry_excel.pack(pady=5)
-    btn_excel = tk.Button(root, text="Selecionar Excel", command=lambda: selecionar_excel(entry_excel))
-    btn_excel.pack(pady=5)
-
-    label_programa = tk.Label(root, text="Caminho do Programa:")
-    label_programa.pack(pady=5)
-    entry_programa = tk.Entry(root, width=40)
-    entry_programa.pack(pady=5)
-    btn_programa = tk.Button(root, text="Selecionar Programa", command=lambda: selecionar_programa(entry_programa))
-    btn_programa.pack(pady=5)
-
-    btn_processar = tk.Button(root, text="Processar", command=lambda: processar(entry_excel, entry_programa))
-    btn_processar.pack(pady=20)
-
+    app = SmartAlbumApp(root)
     root.mainloop()
+
+if __name__ == "__main__":
+    run_interface()
