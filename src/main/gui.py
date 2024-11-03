@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from functions import processar_projetos, ler_dados_excel
+from functions import processar_projetos
 
 class SmartAlbumApp:
     def __init__(self, root):
@@ -22,17 +22,11 @@ class SmartAlbumApp:
         
         self.root.iconbitmap(".\\res\\theme\\Logo-CZR5.ico")
 
-        self.caminho_programa = "C:\\Program Files\\Pixellu SmartAlbum\\SmartAlbums.exe"
+        self.caminho_programa = "C:\Program Files\Pixellu SmartAlbums\SmartAlbums.exe"
 
         self.create_widgets()
 
     def create_widgets(self):
-        # tk.Label(self.root, text="Arquivo Excel:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
-        # self.entry_excel = tk.Entry(self.root, width=self.ENTRY_WIDTH)
-        # self.entry_excel.pack(pady=5)
-        # tk.Button(self.root, text="Selecionar Excel", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
-        #           command=self.selecionar_excel).pack(pady=self.PADY_BUTTON)
-
         tk.Label(self.root, text="Pasta Selecionadas com as Imagens:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
         self.entry_caminho_entrada = tk.Entry(self.root, width=self.ENTRY_WIDTH)
         self.entry_caminho_entrada.pack(pady=5)
@@ -82,16 +76,6 @@ class SmartAlbumApp:
             return
         
         processar_projetos(caminho_programa, caminho_pasta_entrada, caminho_pasta_salvamento)
-
-        # try:
-        #     df_projetos = ler_dados_excel(caminho_excel)
-        #     if df_projetos is not None:
-        #         processar_projetos(caminho_programa, caminho_pasta_entrada, caminho_pasta_salvamento)
-        #         messagebox.showinfo("Sucesso", "Processamento concluído com sucesso!")
-        #     else:
-        #         messagebox.showerror("Erro", "Erro ao ler o arquivo Excel.")
-        # except Exception as e:
-        #     messagebox.showerror("Erro", f"Erro ao processar: {str(e)}")
 
 def run_interface():
     root = tk.Tk()
