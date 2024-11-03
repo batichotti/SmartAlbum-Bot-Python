@@ -9,7 +9,7 @@ def abrir_programa(caminho_programa):
     time.sleep(1)
     pyautogui.write(caminho_programa)
     pyautogui.press('enter')
-    time.sleep(5)
+    time.sleep(10)
 
 def verificar_login():
     if pyautogui.locateOnScreen('imagem_login.png') is not None:
@@ -43,17 +43,20 @@ def exportar_arquivos(caminho_exportar):
         pyautogui.hotkey('ctrl', 's')
         pyautogui.hotkey('ctrl', 'w')
 
-def processar_projetos(caminho_programa, dataframe):
+def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
     abrir_programa(caminho_programa)
+    # Montagem da pasta de entrada -> ..\\SEPARADAS\\{imagens}\\..
 
     if verificar_login():
         for index, row in dataframe.iterrows():
+            
             nome_projeto = row['Nome do Projeto']
             caminho_exportar = row['Caminho de Exportação']
+            
             print(f"Processando projeto: {nome_projeto}")
             
             criar_novo_projeto(nome_projeto)
             time.sleep(2)
             exportar_arquivos(caminho_exportar)
     else:
-        print("Usuário não está logado, abortando a operação.")
+        messagebox.showwarning("O usuário não está logado.")
