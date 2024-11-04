@@ -30,32 +30,40 @@ def criar_novo_projeto(id, output_folder):
     botao_album = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_album.png")
     if botao_album:
         pyautogui.click(botao_album)
-        time.sleep(3)
-    botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado.png")
+        time.sleep(2)
+    try:
+        botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado.png")
+    except:
+        time.sleep(1)
+        botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado2.png")
+    
     if botao_personalizado:
         pyautogui.click(botao_personalizado)
         time.sleep(1)
 
-    botao_new_preset = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_new_preset.png")
-    if botao_new_preset:
-        pyautogui.click(botao_new_preset)
-        time.sleep(1)
-        botao_23x60 = pyautogui.locateCenterOnScreen(".\\res\\func\\23x60.png")
-        if botao_23x60:
-            pyautogui.click(botao_23x60)
+    try:
+        botao_new_preset = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_new_preset.png")
+        if botao_new_preset:
+            pyautogui.click(botao_new_preset)
             time.sleep(1)
-    pyautogui.press("enter")
-    time.sleep(1)
-    pyautogui.press("enter")
-    time.sleep(1)
-    pyautogui.typewrite(f"{output_folder}\{id}")
-    pyautogui.press("right")
-    pyautogui.press("enter")
+            botao_23x60 = pyautogui.locateCenterOnScreen(".\\res\\func\\23x60.png")
+            if botao_23x60:
+                pyautogui.click(botao_23x60)
+                time.sleep(1)
+    except:
+        pyautogui.press("enter")
+        time.sleep(1)
+        pyautogui.press("enter")
+        time.sleep(1) # LEMBRADE MUDAR ISSO PELO BVEM DA DONA MARCELA
+        pyautogui.typewrite(f"{id}")
+        pyautogui.press("right")
+        pyautogui.press("enter")
 
 def importar_imagens(images_folder):
     botao_import = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_importar_imagens.png")
     if botao_import:
         pyautogui.click(botao_import)
+        pyautogui.hotkey("ctrl","l")
         pyautogui.typewrite(images_folder)
         time.sleep(1)
         pyautogui.hotkey("crtl", "a")
