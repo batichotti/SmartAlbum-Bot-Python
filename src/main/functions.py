@@ -35,7 +35,10 @@ def criar_novo_projeto(id, output_folder):
         botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado.png")
     except:
         time.sleep(1)
-        botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado2.png")
+        try:
+            botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado2.png")
+        except:
+            botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado.png")
     
     if botao_personalizado:
         pyautogui.click(botao_personalizado)
