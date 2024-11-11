@@ -9,12 +9,20 @@ def abrir_programa(caminho_programa):
     pyautogui.press("enter")
     time.sleep(10)
 
-def verifica_tela_inicial():
-    # Aqui, você pode usar uma condição para garantir que a tela está visível
-    return pyautogui.locateOnScreen('.\\res\\func\\tela_com_new_project.png') is not None
+def get_botao(image_path: str):
+    """Localiza a posição central de um botão na tela baseado em uma imagem.
+
+    Args:
+        image_path (str): Caminho da imagem do botão a ser localizado.
+
+    Returns:
+        (x, y): A posição central (x, y) do botão se encontrado.
+        None: Se a imagem do botão não for encontrada.
+    """
+    return pyautogui.locateCenterOnScreen(image_path)
 
 def criar_novo_projeto(id, output_folder):
-    botao_criar_projeto = pyautogui.locateCenterOnScreen('.\\res\\func\\bt_novo_projeto.png')
+    botao_criar_projeto = get_botao('.\\res\\func\\bt_novo_projeto.png')
     if botao_criar_projeto:
         pyautogui.click(botao_criar_projeto)
         time.sleep(1)
@@ -22,20 +30,12 @@ def criar_novo_projeto(id, output_folder):
         print("Botão de criar novo projeto não encontrado.")
         return
 
-    botao_album = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_album.png")
+    botao_album = get_botao(".\\res\\func\\bt_album.png")
     if botao_album:
         pyautogui.click(botao_album)
         time.sleep(2)
 
-    try:
-        botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado.png")
-    except:
-        time.sleep(1)
-        try:
-            botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado2.png")
-        except:
-            botao_personalizado = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_personalizado.png")
-
+    botao_personalizado = get_botao(".\\res\\func\\bt_personalizado.png") or get_botao(".\\res\\func\\bt_personalizado2.png")
     if botao_personalizado:
         pyautogui.click(botao_personalizado)
         time.sleep(1)
@@ -43,28 +43,25 @@ def criar_novo_projeto(id, output_folder):
         print("Botão personalizado não encontrado.")
         return
 
-    try:
-        botao_new_preset = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_new_preset.png")
-        if botao_new_preset:
-            pyautogui.click(botao_new_preset)
+    botao_new_preset = get_botao(".\\res\\func\\bt_new_preset.png")
+    if botao_new_preset:
+        pyautogui.click(botao_new_preset)
+        time.sleep(1)
+        botao_23x60 = get_botao(".\\res\\func\\23x60.png")
+        if botao_23x60:
+            pyautogui.click(botao_23x60)
             time.sleep(1)
-            botao_23x60 = pyautogui.locateCenterOnScreen(".\\res\\func\\23x60.png")
-            if botao_23x60:
-                pyautogui.click(botao_23x60)
-                time.sleep(1)
-        else:
-            print("Botão de novo preset não encontrado, usando fallback.")
-            pyautogui.press("enter")
-            time.sleep(1)
-            pyautogui.press("enter")
-            time.sleep(1)
-            pyautogui.write(f"{id}")
-            pyautogui.press("enter")
-    except Exception as e:
-        print(f"Erro ao tentar criar novo projeto: {e}")
+    else:
+        print("Botão de novo preset não encontrado, usando fallback.")
+        pyautogui.press("enter")
+        time.sleep(1)
+        pyautogui.press("enter")
+        time.sleep(1)
+        pyautogui.write(f"{id}")
+        pyautogui.press("enter")
 
 def importar_imagens(images_folder):
-    botao_import = pyautogui.locateCenterOnScreen(".\\res\\func\\bt_importar_imagens.png")
+    botao_import = get_botao(".\\res\\func\\bt_importar_imagens.png")
     if botao_import:
         pyautogui.click(botao_import)
         pyautogui.hotkey("ctrl", "l")
@@ -73,13 +70,13 @@ def importar_imagens(images_folder):
         pyautogui.hotkey("ctrl", "a")
         pyautogui.press("enter")
         
-        while pyautogui.locateOnScreen(".\\res\\func\\load_importando_imagens.png") is not None:
-            time.sleep(10)  # Espera enquanto as imagens estão sendo importadas
+        while get_botao(".\\res\\func\\load_importando_imagens.png") is not None:
+            time.sleep(10)
     else:
         print("Botão de importar imagens não encontrado.")
 
 def salvar_arquivos(caminho_exportar):
-    botao_exportar = pyautogui.locateCenterOnScreen('.\\res\\func\\botao_exportar.png')
+    botao_exportar = get_botao('.\\res\\func\\botao_exportar.png')
     if botao_exportar:
         pyautogui.click(botao_exportar)
         time.sleep(2)
@@ -93,9 +90,6 @@ def salvar_arquivos(caminho_exportar):
 
 def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
     # abrir_programa(caminho_programa)
-    
-    # while not verifica_tela_inicial():
-    #     time.sleep(5)
 
     for folder in os.listdir(pasta_entrada):
         id_aluno = folder.replace(' ', '_')
