@@ -2,6 +2,7 @@ import pyautogui
 from time import sleep
 import os
 
+
 def abrir_programa(caminho_programa):
     try:
         pyautogui.hotkey("win", "r")
@@ -21,6 +22,7 @@ def get_botao(image_path):
 
 def criar_novo_projeto(id):
     try:
+        sleep(5)
         botao_criar_projeto = get_botao('./res/func/bt_novo_projeto.png')
         if botao_criar_projeto:
             pyautogui.click(botao_criar_projeto)
@@ -41,18 +43,29 @@ def criar_novo_projeto(id):
             pyautogui.click(botao_new_preset)
             sleep(1)
             botao_23x60 = get_botao('./res/func/23x60.png')
+            
+            while not botao_23x60:
+                sleep(1)
+                botao_23x60 = get_botao('./res/func/23x60.png')
+            
             if botao_23x60:
                 pyautogui.click(botao_23x60)
                 sleep(1)
         else:
-            print("Botão de novo preset não encontrado, usando fallback.")
-            pyautogui.press("enter")
-            sleep(1)
-            pyautogui.press("enter")
-            sleep(1)
-            pyautogui.write(f"{id}")
-            pyautogui.press("enter")
+            botao_always_exist = get_botao('./res/func/23x60_always_there.png')
+            if botao_always_exist:
+                pyautogui.press("enter")
+                sleep(1)
+                pyautogui.press("enter")
+                sleep(1)
+                pyautogui.write(f"{id}")
+                pyautogui.press("enter")
 
+        botao_proximo = get_botao('./res/func/bt_proximo.png')
+        if botao_proximo:
+            pyautogui.click(botao_proximo)
+            sleep(1)
+            
         return True
     except:
         return False
@@ -105,3 +118,6 @@ def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
             sleep(1)
 
         break
+
+if __name__ == "__main__":
+    processar_projetos("", "E:\\UNICESUMAR Campina da Lagoa\\SEPARADAS", "C:\\Users\\Pablo\\Downloads\\teste")
