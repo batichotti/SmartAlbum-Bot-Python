@@ -98,7 +98,6 @@ def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
     for folder in os.listdir(pasta_entrada):
         id_aluno = folder.replace(' ', '_')
 
-        print(f"Processando projeto: {id_aluno}")
         while not criar_novo_projeto(id_aluno, pasta_saida):
             time.sleep(1)
 
