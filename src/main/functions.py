@@ -19,7 +19,7 @@ def get_botao(image_path):
         print(f"Erro ao localizar botão {image_path}: {e}")
         return None
 
-def criar_novo_projeto(id, output_folder):
+def criar_novo_projeto(id):
     try:
         botao_criar_projeto = get_botao('./res/func/bt_novo_projeto.png')
         if botao_criar_projeto:
@@ -91,7 +91,7 @@ def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
     for folder in os.listdir(pasta_entrada):
         id_aluno = folder.replace(' ', '_')
 
-        while not criar_novo_projeto(id_aluno, pasta_saida):
+        while not criar_novo_projeto(id_aluno):
             time.sleep(1)
 
         # if not criar_novo_projeto(id_aluno, pasta_saida):
