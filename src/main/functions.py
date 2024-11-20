@@ -98,7 +98,7 @@ def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
         while not criar_novo_projeto(id_aluno):
             sleep(1)
 
-        while not importar_imagens(f"{pasta_entrada}/{folder}"):
+        while not importar_imagens(os.path.join(pasta_entrada, folder)):
             sleep(1)
         
         while not salvar_arquivos(pasta_saida):
