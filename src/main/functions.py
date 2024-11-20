@@ -98,9 +98,11 @@ def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
         id_aluno = folder.replace(' ', '_')
 
         print(f"Processando projeto: {id_aluno}")
-        if not criar_novo_projeto(id_aluno, pasta_saida):
-            print(f"Erro ao criar projeto para {id_aluno}. Pulando...")
-            continue
+        while not criar_novo_projeto(id_aluno, pasta_saida):
+            time.sleep(1)
+
+        # if not criar_novo_projeto(id_aluno, pasta_saida):
+        #     continue
 
         time.sleep(2)
         importar_imagens(f"{pasta_entrada}/{folder}")

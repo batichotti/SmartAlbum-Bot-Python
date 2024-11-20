@@ -1,19 +1,23 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import configparser
 from functions import processar_projetos
+
+config = configparser.ConfigParser()
+config.read(".env")
 
 class SmartAlbumApp:
     def __init__(self, root):
-        self.WINDOW_WIDTH = 600
-        self.WINDOW_HEIGHT = 400
-        self.BG_COLOR = "#f0f0f0"
-        self.LABEL_FONT = ("Helvetica", 12)
-        self.ENTRY_WIDTH = 50
-        self.BUTTON_FONT = ("Helvetica", 10, "bold")
-        self.BUTTON_BG = "#4CAF50"
-        self.BUTTON_FG = "#FFFFFF"
-        self.PADY_LABEL = 10
-        self.PADY_BUTTON = 15
+        self.WINDOW_WIDTH = int(config["DEFAULT"].get("WINDOW_WIDTH", 600))
+        self.WINDOW_HEIGHT = int(config["DEFAULT"].get("WINDOW_HEIGHT", 400))
+        self.BG_COLOR = config["DEFAULT"].get("BG_COLOR", "#f0f0f0")
+        self.LABEL_FONT = tuple(config["DEFAULT"].get("LABEL_FONT", "Helvetica,12").split(","))
+        self.ENTRY_WIDTH = int(config["DEFAULT"].get("ENTRY_WIDTH", 50))
+        self.BUTTON_FONT = tuple(config["DEFAULT"].get("BUTTON_FONT", "Helvetica,10,bold").split(","))
+        self.BUTTON_BG = config["DEFAULT"].get("BUTTON_BG", "#4CAF50")
+        self.BUTTON_FG = config["DEFAULT"].get("BUTTON_FG", "#FFFFFF")
+        self.PADY_LABEL = int(config["DEFAULT"].get("PADY_LABEL", 10))
+        self.PADY_BUTTON = int(config["DEFAULT"].get("PADY_BUTTON", 15))
 
         self.root = root
         self.root.title("SmartAlbum Bot - by: Matt Cohuzer Batichotti")
