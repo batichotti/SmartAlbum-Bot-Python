@@ -94,6 +94,7 @@ def salvar_arquivos(caminho_exportar):
         print("Botão de exportar não encontrado.")
 
 def processar_projetos(caminho_programa, pasta_entrada, pasta_saida):
+    # abrir_programa(caminho_programa)
     for folder in os.listdir(pasta_entrada):
         id_aluno = folder.replace(' ', '_')
 
