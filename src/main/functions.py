@@ -19,7 +19,11 @@ def get_botao(image_path: str):
         (x, y): A posição central (x, y) do botão se encontrado.
         None: Se a imagem do botão não for encontrada.
     """
-    return pyautogui.locateCenterOnScreen(image_path)
+    try:
+        return pyautogui.locateCenterOnScreen(image_path)
+    except:
+        return None
+
 
 def criar_novo_projeto(id, output_folder):
     botao_criar_projeto = get_botao('.\\res\\func\\bt_novo_projeto.png')
