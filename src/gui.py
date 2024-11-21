@@ -1,35 +1,30 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import configparser
+import os
 from functions import processar_projetos
-
-config = configparser.ConfigParser()
-config.read(".env")
 
 class SmartAlbumApp:
     def __init__(self, root):
-        self.WINDOW_WIDTH = int(config["DEFAULT"].get("WINDOW_WIDTH", 600))
-        self.WINDOW_HEIGHT = int(config["DEFAULT"].get("WINDOW_HEIGHT", 400))
-        self.BG_COLOR = config["DEFAULT"].get("BG_COLOR", "#f0f0f0")
-        self.LABEL_FONT = tuple(config["DEFAULT"].get("LABEL_FONT", "Helvetica,12").split(","))
-        self.ENTRY_WIDTH = int(config["DEFAULT"].get("ENTRY_WIDTH", 50))
-        self.BUTTON_FONT = tuple(config["DEFAULT"].get("BUTTON_FONT", "Helvetica,10,bold").split(","))
-        self.BUTTON_BG = config["DEFAULT"].get("BUTTON_BG", "#4CAF50")
-        self.BUTTON_FG = config["DEFAULT"].get("BUTTON_FG", "#FFFFFF")
-        self.PADY_LABEL = int(config["DEFAULT"].get("PADY_LABEL", 10))
-        self.PADY_BUTTON = int(config["DEFAULT"].get("PADY_BUTTON", 15))
+        self.WINDOW_WIDTH = 600
+        self.WINDOW_HEIGHT = 400
+        self.BG_COLOR = "#f0f0f0"
+        self.LABEL_FONT = ("Helvetica", 12)
+        self.ENTRY_WIDTH = 50
+        self.BUTTON_FONT = ("Helvetica", 10, "bold")
+        self.BUTTON_BG = "#4CAF50"
+        self.BUTTON_FG = "#FFFFFF"
+        self.PADY_LABEL = 10
+        self.PADY_BUTTON = 15
 
         self.root = root
         self.root.title("SmartAlbum Bot - by: Matt Cohuzer Batichotti")
         self.root.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
         self.root.config(bg=self.BG_COLOR)
-        
-        self.root.iconbitmap(".\\res\\theme\\Logo-CZR5.ico")
-
-        self.caminho_programa = "C:\Program Files\Pixellu SmartAlbums\SmartAlbums.exe"
+    
 
         self.create_widgets()
-
+    
+    
     def create_widgets(self):
         tk.Label(self.root, text="Pasta Selecionadas com as Imagens:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
         self.entry_caminho_entrada = tk.Entry(self.root, width=self.ENTRY_WIDTH)
@@ -40,7 +35,7 @@ class SmartAlbumApp:
         tk.Label(self.root, text="Pasta de Salvamento:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
         self.entry_pasta_salvamento = tk.Entry(self.root, width=self.ENTRY_WIDTH)
         self.entry_pasta_salvamento.pack(pady=5)
-        tk.Button(self.root, text="Selecionar Pasta (Aonde Salvar)", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
+        tk.Button(self.root, text="Selecionar Pasta (Onde Salvar)", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
                   command=self.selecionar_pasta_salvamento).pack(pady=self.PADY_BUTTON)
 
         tk.Button(self.root, text="Processar", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
@@ -73,13 +68,12 @@ class SmartAlbumApp:
     def processar(self):
         caminho_pasta_salvamento = self.entry_pasta_salvamento.get()
         caminho_pasta_entrada = self.entry_caminho_entrada.get()
-        caminho_programa = self.caminho_programa
 
-        if not caminho_pasta_salvamento or not caminho_programa:
+        if not caminho_pasta_salvamento:
             messagebox.showwarning("Aviso", "Por favor, preencha todos os campos.")
             return
         
-        processar_projetos(caminho_programa, caminho_pasta_entrada, caminho_pasta_salvamento)
+        processar_projetos(caminho_pasta_entrada.replace("\\", "/"), caminho_pasta_salvamento.replace("\\", "/"), False)
 
 def run_interface():
     root = tk.Tk()
