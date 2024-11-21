@@ -23,7 +23,7 @@ def get_botao(image_path):
 def exception_overwrite():
     sleep(1)
     for i in range(2):
-        botao_substituir = get_botao("..\\imagens\\deseja_substituilo.png")
+        botao_substituir = get_botao("..\\images\\deseja_substituilo.png")
         if botao_substituir:
             pyautogui.press("left")
             pyautogui.press("enter")
@@ -33,17 +33,17 @@ def exception_overwrite():
 def criar_novo_projeto(id, saida):
     try:
         sleep(5)
-        botao_criar_projeto = get_botao('../imagens/bt_novo_projeto.png')
+        botao_criar_projeto = get_botao('../images/bt_novo_projeto.png')
         if botao_criar_projeto:
             pyautogui.click(botao_criar_projeto)
             sleep(1)
 
-        botao_album = get_botao('../imagens/bt_album.png')
+        botao_album = get_botao('../images/bt_album.png')
         if botao_album:
             pyautogui.click(botao_album)
             sleep(1)
 
-        botao_personalizado = get_botao('../imagens/bt_personalizado3.png')
+        botao_personalizado = get_botao('../images/bt_personalizado3.png')
         if botao_personalizado:
             pyautogui.click(botao_personalizado)
         else:
@@ -51,11 +51,11 @@ def criar_novo_projeto(id, saida):
 
         sleep(2)
         
-        botao_always_exist = get_botao('../imagens/23x60_always_there_2.png')
+        botao_always_exist = get_botao('../images/23x60_always_there_2.png')
         if not botao_always_exist:
-            botao_always_exist = get_botao('../imagens/23x60_always_there_3.png')
+            botao_always_exist = get_botao('../images/23x60_always_there_3.png')
         if not botao_always_exist:
-            botao_always_exist = get_botao('../imagens/23x60_always_there.png')
+            botao_always_exist = get_botao('../images/23x60_always_there.png')
  
         if botao_always_exist:
             pyautogui.press("enter") # Proximo
