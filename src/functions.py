@@ -1,5 +1,4 @@
 from time import sleep
-import unicodedata
 import pyautogui
 import os
 
@@ -29,6 +28,7 @@ def exception_overwrite():
             pyautogui.press("left")
             pyautogui.press("enter")
             sleep(2)
+    print("All good - Exception handled")
 
 def criar_novo_projeto(id, saida):
     try:
@@ -58,9 +58,9 @@ def criar_novo_projeto(id, saida):
             botao_always_exist = get_botao('../imagens/23x60_always_there.png')
  
         if botao_always_exist:
-            pyautogui.press("enter")
+            pyautogui.press("enter") # Proximo
             sleep(1)
-            pyautogui.press("enter")
+            pyautogui.press("enter") # Iniciar
             sleep(1)
         else:
             pyautogui.click(x=1106, y=403) # Botão Novo Preset
@@ -111,16 +111,16 @@ def importar_imagens(images_folder, id):
         return False
 
 
-def salvar_arquivos():
+def salvar_arquivos(minutes):
     try:
-        sleep(255)
+        sleep(60*minutes+15)
         pyautogui.hotkey('ctrl', 's')
         pyautogui.hotkey('alt', 'f4')
         return True
     except:
         return False
 
-def processar_projetos(pasta_entrada, pasta_saida, abrir):
+def processar_projetos(pasta_entrada, pasta_saida, minutes, abrir):
     caminho_programa = "C:\\Program Files\\Pixellu SmartAlbums\\SmartAlbum.exe"
     abrir = False
     if abrir:
@@ -136,11 +136,11 @@ def processar_projetos(pasta_entrada, pasta_saida, abrir):
             while not importar_imagens(pasta_entrada, folder):
                 sleep(1)
 
-            while not salvar_arquivos():
+            while not salvar_arquivos(minutes):
                 sleep(1)
 
     pyautogui.alert('Processamento finalizado com sucesso!', 'Sucesso!', button='OK')
 
 
 if __name__ == "__main__":
-    processar_projetos("\\\\impressora\\6 Tera\\Arquivos compartilhados\\PRE EVENTOS 2024\\TEC ENFERMAGEM IRETAMA\\PRONTAS PARA SEPARAR\\SEPARADAS", "C:\\Users\\Pablo\\Desktop\\test bot prontas", False)
+    processar_projetos("\\\\impressora\\6 Tera\\Arquivos compartilhados\\PRE EVENTOS 2024\\TEC ENFERMAGEM IRETAMA\\PRONTAS PARA SEPARAR\\SEPARADAS", "C:\\Users\\Pablo\\Desktop\\test bot prontas", 2, False)

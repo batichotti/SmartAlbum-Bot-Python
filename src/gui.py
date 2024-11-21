@@ -20,13 +20,11 @@ class SmartAlbumApp:
         self.root.title("SmartAlbum Bot - by: Matt Cohuzer Batichotti")
         self.root.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
         self.root.config(bg=self.BG_COLOR)
-    
 
         self.create_widgets()
-    
-    
+
     def create_widgets(self):
-        tk.Label(self.root, text="Pasta Selecionadas com as Imagens:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
+        tk.Label(self.root, text="Pasta Selecionada com as Imagens:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
         self.entry_caminho_entrada = tk.Entry(self.root, width=self.ENTRY_WIDTH)
         self.entry_caminho_entrada.pack(pady=5)
         tk.Button(self.root, text="Selecionar Pasta (Imagens)", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
@@ -38,8 +36,18 @@ class SmartAlbumApp:
         tk.Button(self.root, text="Selecionar Pasta (Onde Salvar)", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
                   command=self.selecionar_pasta_salvamento).pack(pady=self.PADY_BUTTON)
 
+        tk.Label(self.root, text="Minutos de Espera:", bg=self.BG_COLOR, font=self.LABEL_FONT).pack(pady=self.PADY_LABEL)
+        validate_command = self.root.register(self.validar_inteiro)
+        self.entry_minutos = tk.Entry(self.root, width=self.ENTRY_WIDTH, validate="key", validatecommand=(validate_command, "%P"))
+        self.entry_minutos.pack(pady=5)
+
         tk.Button(self.root, text="Processar", font=self.BUTTON_FONT, bg=self.BUTTON_BG, fg=self.BUTTON_FG,
                   command=self.processar).pack(pady=self.PADY_BUTTON)
+
+    def validar_inteiro(self, valor):
+        if valor.isdigit() or valor == "":
+            return True
+        return False
 
     def selecionar_arquivo(self, entry, tipo_arquivo, extensao):
         caminho = filedialog.askopenfilename(
@@ -49,9 +57,6 @@ class SmartAlbumApp:
         if caminho:
             entry.delete(0, tk.END)
             entry.insert(0, caminho)
-
-    def selecionar_excel(self):
-        self.selecionar_arquivo(self.entry_excel, "Excel", "*.xlsx")
 
     def selecionar_pasta_salvamento(self):
         caminho = filedialog.askdirectory(title="Selecione a Pasta de Salvamento")
@@ -68,12 +73,19 @@ class SmartAlbumApp:
     def processar(self):
         caminho_pasta_salvamento = self.entry_pasta_salvamento.get()
         caminho_pasta_entrada = self.entry_caminho_entrada.get()
+        minutos = self.entry_minutos.get()
 
-        if not caminho_pasta_salvamento:
+        if not caminho_pasta_salvamento or not caminho_pasta_entrada or not minutos:
             messagebox.showwarning("Aviso", "Por favor, preencha todos os campos.")
             return
-        
-        processar_projetos(caminho_pasta_entrada.replace("\\", "/"), caminho_pasta_salvamento.replace("\\", "/"), False)
+
+        try:
+            minutos = int(minutos)
+        except ValueError:
+            messagebox.showerror("Erro", "O campo 'Tempo em Minutos' deve conter um digito numerico como valor.")
+            return
+
+        processar_projetos(caminho_pasta_entrada.replace("\\", "/"), caminho_pasta_salvamento.replace("\\", "/"), minutos, False)
 
 def run_interface():
     root = tk.Tk()
