@@ -23,7 +23,7 @@ def get_botao(image_path):
 def exception_overwrite():
     sleep(1)
     for i in range(2):
-        botao_substituir = get_botao("..\\images\\deseja_substituilo.png")
+        botao_substituir = get_botao("../images/deseja_substituilo.png")
         if botao_substituir:
             pyautogui.press("left")
             pyautogui.press("enter")
