@@ -1,3 +1,5 @@
+fx: {
+from tkinter import messagebox
 from time import sleep
 import pyautogui
 import os
@@ -23,77 +25,99 @@ def get_botao(image_path):
 def exception_overwrite():
     sleep(1)
     for i in range(2):
-        botao_substituir = get_botao("../images/deseja_substituilo.png")
+        botao_substituir = get_botao(".\\res\\func\\deseja_substituilo.png")
         if botao_substituir:
             pyautogui.press("left")
             pyautogui.press("enter")
             sleep(2)
-    print("All good - Exception handled")
 
 def criar_novo_projeto(id, saida):
     try:
         sleep(5)
-        botao_criar_projeto = get_botao('../images/bt_novo_projeto.png')
+        botao_criar_projeto = get_botao('./res/func/bt_novo_projeto.png')
         if botao_criar_projeto:
             pyautogui.click(botao_criar_projeto)
             sleep(1)
 
-        botao_album = get_botao('../images/bt_album.png')
+        botao_album = get_botao('./res/func/bt_album.png')
         if botao_album:
             pyautogui.click(botao_album)
             sleep(1)
 
-        botao_personalizado = get_botao('../images/bt_personalizado3.png')
+        botao_personalizado = get_botao('./res/func/bt_personalizado3.png')
+        while not botao_personalizado:
+            sleep(1)
+            botao_personalizado = get_botao('./res/func/bt_personalizado.png')
+            if not botao_personalizado:
+                botao_personalizado = get_botao('./res/func/bt_personalizado2.png')
+            if not botao_personalizado:
+                botao_personalizado = get_botao('./res/func/bt_personalizado3.png')
+            
         if botao_personalizado:
             pyautogui.click(botao_personalizado)
-        else:
-            pyautogui.click(x=1360, y=300)
+            sleep(1)
 
+        
         sleep(2)
-        
-        botao_always_exist = get_botao('../images/23x60_always_there_2.png')
-        if not botao_always_exist:
-            botao_always_exist = get_botao('../images/23x60_always_there_3.png')
-        if not botao_always_exist:
-            botao_always_exist = get_botao('../images/23x60_always_there.png')
- 
+        botao_always_exist = get_botao('./res/func/23x60_always_there_2.png')
+        botao_new_preset = get_botao('./res/func/bt_new_preset.png')
+        while (not botao_always_exist) and (not botao_new_preset):
+            
+            botao_always_exist = get_botao('./res/func/23x60_always_there_2.png')
+            if not botao_always_exist:
+                botao_always_exist = get_botao('./res/func/23x60_always_there_3.png')
+            if not botao_always_exist:
+                botao_always_exist = get_botao('./res/func/23x60_always_there.png')
+                
+            botao_new_preset = get_botao('./res/func/bt_new_preset.png')
+            
         if botao_always_exist:
-            pyautogui.press("enter") # Proximo
+            pyautogui.press("enter")
             sleep(1)
-            pyautogui.press("enter") # Iniciar
+            pyautogui.press("enter")
             sleep(1)
+            pyautogui.hotkey("ctrl", "l")
+            pyautogui.write(f"{saida}")
+            pyautogui.press("right")
+            pyautogui.press("enter")
+            for i in range(7):
+                pyautogui.press("tab")
+            pyautogui.write(f"{id}")
+            pyautogui.press("enter")
+            exception_overwrite()
         else:
-            pyautogui.click(x=1106, y=403) # Botão Novo Preset
-            pyautogui.click(x=1138, y=439) # Botão 23x60
+            if botao_new_preset:
+                pyautogui.click(botao_new_preset)
+                sleep(1)
+                botao_23x60 = get_botao('./res/func/23x60.png')
+                
+                while not botao_23x60:
+                    sleep(1)
+                    botao_23x60 = get_botao('./res/func/23x60.png')
+            
+                if botao_23x60:
+                    pyautogui.click(botao_23x60)
+                    sleep(1)
+            
 
-            pyautogui.click(x=1661, y=954) # Proximo
-            pyautogui.click(x=1670, y=820) # Iniciar
-        
-        sleep(1)
-        pyautogui.hotkey("ctrl", "l")
-        pyautogui.write(f"{saida}")
-        pyautogui.press("right")
-        pyautogui.press("enter")
-        for i in range(7):
-            pyautogui.press("tab")
-        pyautogui.write(f"{id}")
-        pyautogui.press("enter")
-        exception_overwrite()
-        sleep(1)
+        botao_proximo = get_botao('./res/func/bt_proximo.png')
+        if botao_proximo:
+            pyautogui.click(botao_proximo)
+            sleep(1)
             
         return True
     except:
         return False
 
-def importar_imagens(images_folder, id):
+def importar_imagens(images_folder):
     
-    try:
-        sleep(5)
-        pyautogui.click(x=300,  y=600)
+    if get_botao(".\\res\\func\\smartalbum_aberto_padrao.png"):
+        sleep(1)
+        pyautogui.click(x=300,  y=300)
         pyautogui.hotkey("ctrl", "i")
         sleep(1)
         pyautogui.hotkey("ctrl", "l")
-        pyautogui.write(f"{images_folder}\\{id}")
+        pyautogui.write(images_folder)
         pyautogui.press("right")
         pyautogui.press("enter")
         sleep(1)
@@ -107,40 +131,43 @@ def importar_imagens(images_folder, id):
         
         exception_overwrite()
         return True
-    except:
+    else:
         return False
 
 
-def salvar_arquivos(minutes):
+def salvar_arquivos():
     try:
-        sleep(60*minutes+15)
+        while not get_botao(".\\res\\func\\was_imported.png"):
+            sleep(1)
+        sleep(1)
         pyautogui.hotkey('ctrl', 's')
         pyautogui.hotkey('alt', 'f4')
         return True
     except:
         return False
 
-def processar_projetos(pasta_entrada, pasta_saida, minutes, abrir):
+def processar_projetos(pasta_entrada, pasta_saida):
     caminho_programa = "C:\\Program Files\\Pixellu SmartAlbums\\SmartAlbum.exe"
-    abrir = False
-    if abrir:
-        abrir_programa(caminho_programa)
+    # abrir_programa(caminho_programa)
     for folder in os.listdir(pasta_entrada):
-        
         if os.path.isdir(os.path.join(pasta_entrada, folder)):
             id_aluno = folder.replace(' ', '_')
 
             while not criar_novo_projeto(id_aluno, pasta_saida):
                 sleep(1)
 
-            while not importar_imagens(pasta_entrada, folder):
+            while not importar_imagens(os.path.join(pasta_entrada, folder)):
                 sleep(1)
 
-            while not salvar_arquivos(minutes):
+            while not salvar_arquivos():
                 sleep(1)
-
-    pyautogui.alert('Processamento finalizado com sucesso!', 'Sucesso!', button='OK')
+    messagebox.showinfo(f"Processamento do Album encontrado em {pasta_entrada} finalizado com sucesso.")
 
 
 if __name__ == "__main__":
-    processar_projetos("\\\\impressora\\6 Tera\\Arquivos compartilhados\\PRE EVENTOS 2024\\TEC ENFERMAGEM IRETAMA\\PRONTAS PARA SEPARAR\\SEPARADAS", "C:\\Users\\Pablo\\Desktop\\test bot prontas", 2, False)
+    processar_projetos("", "C:\\Users\\Pablo\\Desktop\\test bot separadas", "C:\\Users\\Pablo\\Desktop\\test bot prontas")
+}
+
+gui  {
+
+}
