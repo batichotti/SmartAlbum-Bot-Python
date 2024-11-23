@@ -136,16 +136,10 @@ def exception_overwrite():
 def criar_novo_projeto(id, saida):
     try:
         sleep(5)
-        botao_criar_projeto = get_botao('./images/bt_novo_projeto.png')
-        if botao_criar_projeto:
-            pyautogui.click(botao_criar_projeto)
-            sleep(1)
+        pyautogui.click(x=1760, y=200)  # Botão Novo Projeto
+        pyautogui.click(x=1760, y=260)  # Botão Album
 
-        botao_album = get_botao('./images/bt_album.png')
-        if botao_album:
-            pyautogui.click(botao_album)
-            sleep(1)
-
+        sleep(1)
         pyautogui.click(x=1360, y=300)  # Botão Personalizado
 
         sleep(1)
