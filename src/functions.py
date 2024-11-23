@@ -89,7 +89,7 @@ def importar_imagens(images_folder, id):
     
     try:
         sleep(5)
-        pyautogui.click(x=300,  y=300)
+        pyautogui.click(x=300,  y=600)
         pyautogui.hotkey("ctrl", "i")
         sleep(1)
         pyautogui.hotkey("ctrl", "l")
