@@ -85,7 +85,23 @@ class SmartAlbumApp:
             messagebox.showerror("Erro", "O campo 'Tempo em Minutos' deve conter um digito numerico como valor.")
             return
 
-        processar_projetos(caminho_pasta_entrada.replace("\\", "/"), caminho_pasta_salvamento.replace("\\", "/"), minutos, False)
+        texto_confirmacao = (
+            ">> Regras para o funcionamento adequado do programa:\n"
+            "1 - Nada de acentos nas palavras nos caminhos do computador/HD, verificar manualmente.\n"
+            "Atendidas as regras, pressione SIM para continuar a tarefa."
+        )
+
+        resposta = messagebox.askquestion(
+            "Confirmar Processamento", 
+            texto_confirmacao, 
+            icon="warning"
+        )
+
+        if resposta == "yes":
+            processar_projetos(caminho_pasta_entrada.replace("\\", "/"), caminho_pasta_salvamento.replace("\\", "/"), minutos, False)
+        else:
+            return
+
 
 def run_interface():
     root = tk.Tk()
