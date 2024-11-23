@@ -45,43 +45,31 @@ def criar_novo_projeto(id, saida):
         if botao_album:
             pyautogui.click(botao_album)
             sleep(1)
-
-        botao_personalizado = get_botao('./images/bt_personalizado3.png')
-        if botao_personalizado:
-            pyautogui.click(botao_personalizado)
-        else:
-            pyautogui.click(x=1360, y=300)
-
-        sleep(2)
         
-        botao_always_exist = get_botao('./images/23x60_always_there_2.png')
-        if not botao_always_exist:
-            botao_always_exist = get_botao('./images/23x60_always_there_3.png')
-        if not botao_always_exist:
-            botao_always_exist = get_botao('./images/23x60_always_there.png')
- 
-        if botao_always_exist:
-            pyautogui.press("enter") # Proximo
-            sleep(1)
-            pyautogui.press("enter") # Iniciar
-            sleep(1)
-        else:
-            pyautogui.click(x=1106, y=403) # Botão Novo Preset
-            pyautogui.click(x=1138, y=439) # Botão 23x60
+        pyautogui.click(x=1360, y=300) # Botão Personalizado
 
-            pyautogui.click(x=1661, y=954) # Proximo
-            pyautogui.click(x=1670, y=820) # Iniciar
+        sleep(1)
         
-        sleep(3)
+        pyautogui.click(x=1106, y=403) # Botão Novo Preset
+        pyautogui.click(x=1138, y=439) # Botão 23x60
+
+        pyautogui.click(x=1661, y=954) # Proximo
+        sleep(1)
+        
+        pyautogui.click(x=1670, y=820) # Iniciar
+        sleep(3/2)
+        
         pyautogui.hotkey("ctrl", "l")
         pyautogui.write(f"{saida}")
         pyautogui.press("right")
         pyautogui.press("enter")
+        sleep(1)
+        
         for i in range(7):
             pyautogui.press("tab")  # Tabulating to find the writeble field
         pyautogui.write(f"{id}")
         pyautogui.press("enter")
-        exception_overwrite()
+        exception_overwrite()  #  demora + ou - 5 segundos
         sleep(1)
         return True
     except:
@@ -90,12 +78,11 @@ def criar_novo_projeto(id, saida):
 def importar_imagens(images_folder, id):
     
     try:
-        sleep(3)
-        pyautogui.click(x=80, y=80)
+        sleep(4)
         pyautogui.hotkey("ctrl", "i")
         sleep(1)
         pyautogui.hotkey("ctrl", "l")
-        pyautogui.write(f"{images_folder}\\{id}")
+        pyautogui.write(f"{images_folder}/{id}")
         pyautogui.press("right")
         pyautogui.press("enter")
         sleep(1)
@@ -105,9 +92,6 @@ def importar_imagens(images_folder, id):
         
         pyautogui.hotkey("ctrl", "a")
         pyautogui.press("enter")
-        sleep(1)
-        
-        exception_overwrite()
         sleep(1)
         return True
     except:
