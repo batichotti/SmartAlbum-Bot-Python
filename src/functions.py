@@ -10,8 +10,10 @@ def abrir_programa(caminho_programa):
         pyautogui.write(caminho_programa)
         pyautogui.press("enter")
         sleep(10)
+        return True
     except Exception as e:
         print(f"Erro ao abrir o programa: {e}")
+        return False
 
 def get_botao(image_path):
     try:
@@ -81,7 +83,6 @@ def criar_novo_projeto(id, saida):
         pyautogui.press("enter")
         exception_overwrite()
         sleep(1)
-            
         return True
     except:
         return False
@@ -107,6 +108,7 @@ def importar_imagens(images_folder, id):
         sleep(1)
         
         exception_overwrite()
+        sleep(1)
         return True
     except:
         return False
@@ -132,10 +134,8 @@ def processar_projetos(pasta_entrada, pasta_saida, minutes, abrir):
             id_aluno = folder.replace(' ', '_')
 
             criar_novo_projeto(id_aluno, pasta_saida)
-            sleep(1)
 
             importar_imagens(pasta_entrada, folder)
-            sleep(1)
 
             salvar_arquivos(minutes)
 
