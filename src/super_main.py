@@ -200,9 +200,10 @@ def salvar_arquivos(minutes):
         return False
 
 def processar_projetos(pasta_entrada, pasta_saida, minutes, abrir):
-    caminho_programa = "C:\\Program Files\\Pixellu SmartAlbums\\SmartAlbum.exe"
-    if abrir:
-        abrir_programa(caminho_programa)
+    
+    pasta_entrada = pasta_entrada.replace('/', '\\')    
+    pasta_saida = pasta_saida.replace('/', '\\')    
+    
     for folder in os.listdir(pasta_entrada):
         if os.path.isdir(os.path.join(pasta_entrada, folder)):
             id_aluno = folder.replace(' ', '_')
